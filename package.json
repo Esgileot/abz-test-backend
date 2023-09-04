@@ -31,8 +31,6 @@
     "aws-sdk": "^2.1450.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
-    "jimp": "^0.22.10",
-    "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",

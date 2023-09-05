@@ -21,4 +21,4 @@ COPY . .
 RUN yarn build
 
 
-ENTRYPOINT yarn start:$ENV_MODE
+ENTRYPOINT yarn start

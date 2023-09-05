@@ -1,34 +1,23 @@
-# Initiate a container to build the application in.
 FROM node:16.17.1 as base
-ENV NODE_ENV=build
-WORKDIR /usr/src/app
+EXPOSE $PORT
 
-# Copy the package.json into the container.
-COPY package*.json ./
-
-# Install the dependencies required to build the application.
-RUN yarn install
-
-# Copy the application source into the container.
-COPY . .
-
-# Build the application.
-RUN yarn run build
-
-# Uninstall the dependencies not required to run the built application.
-RUN yarn prune --production
-
-# Initiate a new container to run the application in.
-FROM node:16.17.1
-  ENV NODE_ENV=dev
 WORKDIR /app
 
-# Copy everything required to run the built application into the new container.
 COPY package.json .
 COPY yarn.lock .
 
-# Expose the web server's port.
-EXPOSE 8000
+RUN rm -rf dist && rm -rf Dockerfile && rm -rf node_modules
+RUN touch .env.dev .env.stage .env.prod
 
-# Run the application.
+RUN echo "APP_ENV=dev \
+    APP_URL=http://localhost \
+    APP_PORT=$PORT" > .env
+
+RUN yarn install
+RUN yarn add @nestjs/cli
+
+COPY . .
+
+RUN yarn build
+
 ENTRYPOINT yarn run start

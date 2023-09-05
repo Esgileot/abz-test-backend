@@ -1,23 +1,21 @@
-FROM node:16.17.1 as base
-EXPOSE $PORT
+# Base image
+FROM node:18
 
+# Create app directory
 WORKDIR /app
 
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package.json .
 COPY yarn.lock .
 
-RUN rm -rf dist && rm -rf Dockerfile && rm -rf node_modules
-RUN touch .env.dev .env.stage .env.prod
-
-RUN echo "APP_ENV=dev \
-    APP_URL=http://localhost \
-    APP_PORT=$PORT" > .env
-
+# Install app dependencies
 RUN yarn install
-RUN yarn add @nestjs/cli
 
+# Bundle app source
 COPY . .
 
-RUN yarn build
+# Creates a "dist" folder with the production build
+RUN yarn run build
 
-ENTRYPOINT yarn run start
+# Start the server using the production build
+CMD [ "node", "dist/main.js" ]

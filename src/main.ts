@@ -1,11 +1,11 @@
 import { HttpStatus, ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
+import { config } from 'dotenv'
 import { exceptionFactory } from './common/exceptionFactory'
 import { AppModule } from './modules/main/app.module'
 import { setupSwagger } from './swagger'
-import dotenv from 'dotenv'
 
-dotenv.config({ path: `${process.env.DOTENV_CONFIG_PATH}` })
+config({ path: `${process.env.DOTENV_CONFIG_PATH}` })
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)

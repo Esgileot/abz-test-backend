@@ -21,4 +21,4 @@ COPY . .
 RUN yarn build
 
 
-ENTRYPOINT yarn start
+ENTRYPOINT yarn run start

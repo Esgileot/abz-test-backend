@@ -13,25 +13,25 @@ import { UserModule } from '../users/user.module'
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forRootAsync({
-      imports: [SharedModule],
-      useFactory: (configService: ApiConfigService) => configService.dbConfig,
-      inject: [ApiConfigService],
-    }),
-    MulterModule.register({
-      dest: './upload',
-      storage: './upload',
-    }),
-    JwtModule.register({
-      global: true,
-      secret: process.env.JWT_KEY,
-      signOptions: { expiresIn: 2400 },
-    }),
-    PositionModule,
-    TokenModule,
-    UserModule,
-    AuthModule,
+    // ConfigModule.forRoot({ isGlobal: true }),
+    // TypeOrmModule.forRootAsync({
+    //   imports: [SharedModule],
+    //   useFactory: (configService: ApiConfigService) => configService.dbConfig,
+    //   inject: [ApiConfigService],
+    // }),
+    // MulterModule.register({
+    //   dest: './upload',
+    //   storage: './upload',
+    // }),
+    // JwtModule.register({
+    //   global: true,
+    //   secret: process.env.JWT_KEY,
+    //   signOptions: { expiresIn: 2400 },
+    // }),
+    // PositionModule,
+    // TokenModule,
+    // UserModule,
+    // AuthModule,
   ],
   controllers: [],
   providers: [],

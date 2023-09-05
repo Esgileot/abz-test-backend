@@ -20,7 +20,7 @@ RUN yarn prune --production
 
 # Initiate a new container to run the application in.
 FROM node:16.17.1
-  ENV NODE_ENV=production
+  ENV NODE_ENV=dev
 WORKDIR /app
 
 # Copy everything required to run the built application into the new container.

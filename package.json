@@ -1,8 +1,8 @@
 {
   "name": "abz-test-backend",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "",
-  "author": "",
+  "author": "Esgileot",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -13,13 +13,15 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "typeorm:local": "yarn build && cross-env DOTENV_CONFIG_PATH=.env.local typeorm -d dist/config/orm-config.js",
+    "typeorm:dev": "yarn build && cross-env DOTENV_CONFIG_PATH=.env.dev typeorm -d dist/config/orm-config.js",
+    "typeorm": "yarn build && npx typeorm -d dist/config/orm-config.js",
+    "migration:create": "yarn run typeorm migration:create",
+    "migration:generate": "yarn run typeorm migration:generate",
+    "migration:run": "yarn run typeorm migration:run"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.0.2",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^3.0.1",
     "@nestjs/core": "^9.0.0",
@@ -29,6 +31,7 @@
     "@nestjs/typeorm": "^10.0.0",
     "@types/jsonwebtoken": "^9.0.2",
     "aws-sdk": "^2.1450.0",
+    "axios": "^1.5.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "dotenv": "^16.3.1",

@@ -1,4 +1,4 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
@@ -13,19 +13,18 @@ export class TokenService {
   ) {}
 
   // Generate new token
-  public getRegistrationToken(): TokenDto {
+  public async getRegistrationToken(): Promise<TokenDto> {
     const token = this.jwtService.sign({ active: true }, { expiresIn: 2400 })
-    this.tokenRepository.save({ token: token, used: false })
+    await this.tokenRepository.save({ token: token, used: false })
     return { token: token }
   }
 
   // Сheck if the token is used and set used
   public async checkToken(token: string): Promise<boolean> {
     const isExistsToken = await this.tokenRepository.findOneBy({ token: token })
-    if (!isExistsToken || isExistsToken.used) {
+    if (!isExistsToken || isExistsToken?.used) {
       return false
     }
-
     await this.tokenRepository.update({ token: token }, { ...isExistsToken, used: true })
     return true
   }

@@ -85,7 +85,7 @@ export class UserController {
     @UploadedFile(
       new ParseFilePipe({
         exceptionFactory(error) {
-          CustomExceptionService.customError('Validation failed', HttpStatus.UNPROCESSABLE_ENTITY, { photo: [error] })
+          throw CustomExceptionService.customError('Validation failed', HttpStatus.UNPROCESSABLE_ENTITY, { photo: [error] })
         },
         validators: [...validationPipes],
       }),

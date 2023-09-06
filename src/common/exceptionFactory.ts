@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus } from '@nestjs/common'
+import { HttpStatus } from '@nestjs/common'
 import { ValidationError } from 'class-validator'
 import { CustomExceptionService } from 'src/modules/shared/custom-exception.service'
 
@@ -13,5 +13,5 @@ export const exceptionFactory = (errors: ValidationError[]) => {
     fails[errors[error].property] = constrains
   }
 
-  CustomExceptionService.customError('Validation failed', HttpStatus.UNPROCESSABLE_ENTITY, fails)
+  throw CustomExceptionService.customError('Validation failed', HttpStatus.UNPROCESSABLE_ENTITY, fails)
 }

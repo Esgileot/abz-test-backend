@@ -68,32 +68,36 @@ export class UserService {
   }
 
   public async createUser(payload: CreateUserDto): Promise<UserDto> {
-    const user = await this.userRepository.findOne({
-      where: [{ phone: payload.phone }, { email: payload.email }],
-    })
-    if (user) {
-      throw CustomExceptionService.customError('User with this phone or email already exist', HttpStatus.CONFLICT)
+    try {
+      const user = await this.userRepository.findOne({
+        where: [{ phone: payload.phone }, { email: payload.email }],
+      })
+      if (user) {
+        throw CustomExceptionService.customError('User with this phone or email already exist', HttpStatus.CONFLICT)
+      }
+
+      const positions = await this.positionService.getPositionsList()
+      const position = positions.find(position => position.id === payload.position_id)
+      if (!positions || !position) {
+        throw CustomExceptionService.customError('Position id not exsists', HttpStatus.UNPROCESSABLE_ENTITY)
+      }
+
+      // Resize and compress image from any size to 70x70
+      const compressedFile = await this.imageService.compressImage(payload.photo.buffer, 70, 70)
+      // Save image into S3 bucket
+      const result = await this.awsS3Service.uploadFile(compressedFile as Buffer, payload.photo.mimetype)
+
+      return await this.userRepository.save({
+        name: payload.name,
+        email: payload.email,
+        phone: payload.phone,
+        position: position.name,
+        position_id: payload.position_id,
+        registration_timestamp: Math.floor(Date.now() / 1000),
+        photo: result.Location,
+      })
+    } catch (err) {
+      console.log(err)
     }
-
-    const positions = await this.positionService.getPositionsList()
-    const position = positions.find(position => position.id === payload.position_id)
-    if (!positions || !position) {
-      throw CustomExceptionService.customError('Position id not exsists', HttpStatus.UNPROCESSABLE_ENTITY)
-    }
-
-    // Resize and compress image from any size to 70x70
-    const compressedFile = await this.imageService.compressImage(payload.photo.buffer, 70, 70)
-    // Save image into S3 bucket
-    const result = await this.awsS3Service.uploadFile(compressedFile as Buffer, payload.photo.mimetype)
-
-    return await this.userRepository.save({
-      name: payload.name,
-      email: payload.email,
-      phone: payload.phone,
-      position: position.name,
-      position_id: payload.position_id,
-      registration_timestamp: Math.floor(Date.now() / 1000),
-      photo: result.Location,
-    })
   }
 }

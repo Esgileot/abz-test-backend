@@ -15,7 +15,7 @@ export class TokenController {
       'Method returns a token that is required to register a new user. The token is valid for 40 minutes and can be used for only one request. For the next registration, you will need to get a new one.',
   })
   @ApiOperation({ summary: 'Get token for user registration' })
-  public getRegistrationToken(): TokenDto {
-    return this.tokenService.getRegistrationToken()
+  public async getRegistrationToken(): Promise<TokenDto> {
+    return await this.tokenService.getRegistrationToken()
   }
 }

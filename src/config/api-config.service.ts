@@ -81,7 +81,7 @@ export class ApiConfigService {
       ssl: this.dbUseSSL,
       logging: this.enableDbLog,
       entities: [join(__dirname, '..', 'modules', '**', '*.entity.{ts,js}')],
-      migrations: [join(__dirname, '..', 'database', 'migrations', '*.{ts,js}')],
+      migrations: [join(__dirname, '..', 'migrations', '*.{ts,js}')],
       migrationsRun: true,
     }
   }

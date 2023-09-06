@@ -13,7 +13,7 @@ export default new DataSource({
   password: env.DB_PASSWORD,
   database: env.DB_DATABASE,
   entities: [join(__dirname, '..', 'modules', '**', '*.entity.{ts,js}')],
-  migrations: [join(__dirname, '..', 'database', 'migrations', '*.{ts,js}')],
+  migrations: [join(__dirname, '..', 'migrations', '*.{ts,js}')],
   migrationsRun: true,
   synchronize: Boolean(env.DB_SYNC),
   ssl: Boolean(env.DB_SSL),
